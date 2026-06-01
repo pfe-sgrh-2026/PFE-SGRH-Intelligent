@@ -36,6 +36,9 @@ Thumbs.db
 *.fls
 *.fdb_latexmk
 
+# === Documentation (locale uniquement) ===
+documentation/
+
 # === Tools / Binaires ===
 tools/
 apache-maven-*.zip
