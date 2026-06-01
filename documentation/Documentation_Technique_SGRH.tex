@@ -1,0 +1,1012 @@
+\documentclass[a4paper,12pt]{report}
+
+% ── Packages ──────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tcolorbox}
+\usepackage{lmodern}
+
+% ── Couleurs ──────────────────────────────────────────────────
+\definecolor{primary}{HTML}{1E40AF}
+\definecolor{codebg}{HTML}{F8F9FA}
+\definecolor{codeframe}{HTML}{DEE2E6}
+\definecolor{keyword}{HTML}{D73A49}
+\definecolor{string}{HTML}{032F62}
+\definecolor{comment}{HTML}{6A737D}
+\definecolor{foldercolor}{HTML}{E65100}
+\definecolor{filecolor}{HTML}{1565C0}
+
+% ── Configuration listings ────────────────────────────────────
+\lstset{
+  backgroundcolor=\color{codebg},
+  frame=single,
+  rulecolor=\color{codeframe},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{keyword}\bfseries,
+  stringstyle=\color{string},
+  commentstyle=\color{comment}\itshape,
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=2,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=8pt,
+  xleftmargin=15pt,
+  framexleftmargin=15pt,
+}
+
+% ── En-tête / Pied de page ───────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{primary}{SGRH Intelligent}}
+\fancyhead[R]{\small\textcolor{primary}{Documentation Technique}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+
+% ── Titre sections colorés ───────────────────────────────────
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{primary}}
+  {\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{primary}}
+  {\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{primary!80!black}}
+  {\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries\color{primary!60!black}}
+  {\thesubsubsection}{1em}{}
+
+% ── Boîtes colorées ──────────────────────────────────────────
+\newtcolorbox{infobox}[1][]{
+  colback=blue!5!white,
+  colframe=primary,
+  fonttitle=\bfseries,
+  title=#1,
+  rounded corners,
+  boxrule=0.5pt,
+}
+
+\newtcolorbox{warningbox}[1][]{
+  colback=orange!5!white,
+  colframe=orange!80!black,
+  fonttitle=\bfseries,
+  title=#1,
+  rounded corners,
+  boxrule=0.5pt,
+}
+
+\newtcolorbox{folderbox}{
+  colback=orange!3!white,
+  colframe=foldercolor,
+  rounded corners,
+  boxrule=0.5pt,
+  left=5pt, right=5pt, top=3pt, bottom=3pt,
+}
+
+\newtcolorbox{filebox}{
+  colback=blue!3!white,
+  colframe=filecolor,
+  rounded corners,
+  boxrule=0.5pt,
+  left=5pt, right=5pt, top=3pt, bottom=3pt,
+}
+
+% ══════════════════════════════════════════════════════════════
+\begin{document}
+
+% ── Page de garde ─────────────────────────────────────────────
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+
+{\Large Université Hassan II de Casablanca}\\[0.3cm]
+{\large Faculté des Sciences Ben M'Sick}\\[0.3cm]
+{\large Département Mathématiques et Informatique}\\[2cm]
+
+\rule{\textwidth}{1.5pt}\\[0.5cm]
+{\Huge\bfseries\textcolor{primary}{Documentation Technique}}\\[0.3cm]
+{\LARGE\textcolor{primary}{SGRH Intelligent}}\\[0.2cm]
+{\large Système de Gestion des Ressources Humaines\\avec Détection d'Anomalies par IA et Analyse OCR}\\[0.3cm]
+\rule{\textwidth}{1.5pt}\\[2cm]
+
+{\large\textbf{PFE -- Licence 3\textsuperscript{ème} Année Développement Informatique}}\\[0.3cm]
+{\large Année Universitaire 2025 -- 2026}\\[2cm]
+
+\begin{tabular}{ll}
+\textbf{Encadré par :} & Pr. Ichrak BENAMRI \\[0.3cm]
+\textbf{Réalisé par :} & MANSOUR Aymane \\
+                        & FOUKOU Issa \\
+                        & BADIA Salahedine \\
+\end{tabular}
+
+\vfill
+{\small Faculté des Sciences Ben M'Sick --- Casablanca}
+\end{titlepage}
+
+% ── Table des matières ────────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ══════════════════════════════════════════════════════════════
+\chapter{Vue d'ensemble du projet}
+% ══════════════════════════════════════════════════════════════
+
+\section{Présentation générale}
+
+Le \textbf{SGRH Intelligent} est une application web complète de gestion des ressources humaines. Elle se distingue des SGRH classiques par l'intégration de deux modules innovants :
+
+\begin{itemize}[leftmargin=2cm]
+  \item[\textbf{IA}] Détection automatique d'anomalies comportementales (retards, absences suspectes) via les algorithmes \textbf{Isolation Forest} et \textbf{K-Means}.
+  \item[\textbf{OCR}] Extraction automatique de texte depuis des documents administratifs numérisés (certificats médicaux, contrats) via le moteur \textbf{Tesseract}.
+\end{itemize}
+
+\section{Architecture globale}
+
+L'application suit une \textbf{architecture trois tiers enrichie d'un microservice IA} :
+
+\begin{center}
+\begin{tabularx}{\textwidth}{|l|l|l|X|}
+\hline
+\textbf{Couche} & \textbf{Technologie} & \textbf{Port} & \textbf{Rôle} \\
+\hline
+Présentation & React JS + Vite & 3000 & Interface utilisateur, tableau de bord, formulaires \\
+\hline
+Backend & Spring Boot / Java 21 & 8080 & API REST, logique métier, sécurité JWT/RBAC \\
+\hline
+Microservice IA & FastAPI / Python & 8000 & Isolation Forest, K-Means, génération de rapports \\
+\hline
+OCR & Tesseract 5.x & -- & Extraction de texte (PDF, images) \\
+\hline
+Données & MySQL 8 & 3306 & Base de données relationnelle \\
+\hline
+\end{tabularx}
+\end{center}
+
+\begin{infobox}[Flux de communication]
+\begin{enumerate}
+  \item Le \textbf{Frontend} envoie des requêtes HTTP REST au \textbf{Backend} avec un token JWT dans le header \texttt{Authorization}.
+  \item Le \textbf{Backend} traite la logique métier et accède à \textbf{MySQL} via JPA/Hibernate.
+  \item Pour l'analyse IA, le Backend appelle le \textbf{Microservice FastAPI} via HTTP POST.
+  \item Pour l'OCR, le Backend invoque \textbf{Tesseract} localement sur les fichiers uploadés.
+  \item Les résultats sont retournés au Frontend pour affichage dans le tableau de bord.
+\end{enumerate}
+\end{infobox}
+
+\section{Arborescence complète du projet}
+
+\begin{lstlisting}[language={},title={\textbf{Structure des dossiers}},morekeywords={frontend,backend,microservice-ia,database,documentation,src,main,java,ma,fsb,sgrh,components,context,pages,services,entity,repository,controller,security,service,dto,resources}]
+PFE_Slah/
+|-- frontend/                    # Interface utilisateur React
+|   |-- index.html               # Point d'entree HTML
+|   |-- package.json             # Dependances NPM
+|   |-- vite.config.js           # Configuration Vite
+|   |-- tailwind.config.js       # Configuration TailwindCSS
+|   |-- postcss.config.js        # Configuration PostCSS
+|   +-- src/
+|       |-- main.jsx             # Demarrage de React
+|       |-- App.jsx              # Routeur principal
+|       |-- index.css            # Styles TailwindCSS
+|       |-- context/
+|       |   +-- AuthContext.jsx  # Gestion authentification
+|       |-- services/
+|       |   +-- api.js           # Client Axios + intercepteurs
+|       |-- components/
+|       |   |-- Layout.jsx       # Mise en page generale
+|       |   |-- Sidebar.jsx      # Menu lateral
+|       |   +-- Header.jsx       # Barre superieure
+|       +-- pages/
+|           |-- LoginPage.jsx    # Page de connexion
+|           |-- DashboardPage.jsx # Tableau de bord
+|           |-- EmployesPage.jsx # Gestion des employes
+|           |-- CongesPage.jsx   # Gestion des conges
+|           |-- PresencesPage.jsx # Suivi des presences
+|           |-- PaiePage.jsx     # Fiches de paie
+|           |-- DocumentsPage.jsx # Documents & OCR
+|           |-- IAPage.jsx       # Analyse IA
+|           +-- UsersPage.jsx    # Gestion utilisateurs
+|-- backend/                     # API REST Spring Boot
+|   |-- pom.xml                  # Dependances Maven
+|   +-- src/main/
+|       |-- resources/
+|       |   +-- application.yml  # Configuration Spring
+|       +-- java/ma/fsb/sgrh/
+|           |-- SgrhApplication.java # Classe principale
+|           |-- entity/          # Entites JPA (7 classes)
+|           |-- repository/      # Repositories Spring Data
+|           |-- controller/      # Controleurs REST (6)
+|           |-- service/         # Services metier
+|           |-- security/        # JWT + Spring Security
+|           +-- dto/             # Objets de transfert
+|-- microservice-ia/             # Module IA Python
+|   |-- main.py                  # Serveur FastAPI
+|   +-- requirements.txt        # Dependances pip
+|-- database/                    # Scripts SQL
+|   |-- schema.sql               # Schema de la BDD
+|   +-- seed.sql                 # Donnees de test
++-- README.md                   # Guide de demarrage
+\end{lstlisting}
+
+
+% ══════════════════════════════════════════════════════════════
+\chapter{Base de données (\texttt{database/})}
+% ══════════════════════════════════════════════════════════════
+
+\section{\texttt{schema.sql} --- Schéma de la base de données}
+
+Ce fichier crée la base \texttt{sgrh\_intelligent} et définit les 7 tables principales, conformément au diagramme de classes UML et à la méthode Merise (MCD/MLD).
+
+\subsection{Tables créées}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Table} & \textbf{Description} \\
+\hline
+\texttt{utilisateur} & Comptes utilisateurs avec email, mot de passe hashé (BCrypt), rôle (\texttt{ADMIN}, \texttt{RH}, \texttt{EMPLOYE}) et statut actif/inactif. \\
+\hline
+\texttt{employe} & Informations personnelles et professionnelles : matricule, nom, prénom, poste, département, salaire, solde de congé. Liée à \texttt{utilisateur} via clé étrangère (relation 1:1). \\
+\hline
+\texttt{conge} & Demandes de congé avec dates, type (\texttt{ANNUEL}, \texttt{MALADIE}, \texttt{SANS\_SOLDE}), statut (\texttt{EN\_ATTENTE}, \texttt{VALIDE}, \texttt{REFUSE}) et motif. \\
+\hline
+\texttt{presence} & Pointages quotidiens : date, heure d'arrivée, heure de départ, indicateur de retard. Contrainte d'unicité sur (employé, date). \\
+\hline
+\texttt{fiche\_paie} & Fiches de paie mensuelles avec salaire brut et net. Contrainte d'unicité sur (employé, mois, année). \\
+\hline
+\texttt{document} & Documents uploadés : nom de fichier, type, chemin physique, texte extrait par OCR, statut de traitement. \\
+\hline
+\texttt{anomalie} & Résultats de l'analyse IA : score d'isolation, type d'anomalie, niveau de risque (\texttt{FAIBLE}, \texttt{MOYEN}, \texttt{ELEVE}), label de cluster. \\
+\hline
+\end{tabularx}
+\end{center}
+
+\subsection{Index de performance}
+Quatre index sont créés pour accélérer les requêtes fréquentes :
+\begin{itemize}
+  \item \texttt{idx\_conge\_employe\_statut} : recherche rapide des congés par employé et statut.
+  \item \texttt{idx\_presence\_date} : filtrage des présences par date.
+  \item \texttt{idx\_anomalie\_risque} : tri des anomalies par niveau de risque et date.
+  \item \texttt{idx\_employe\_departement} : filtrage par département.
+\end{itemize}
+
+\subsection{Conformité loi 09-08}
+La base est configurée en \texttt{utf8mb4} pour supporter le français et l'arabe. Les mots de passe sont stockés en hash BCrypt (jamais en clair). Les identifiants personnels peuvent être anonymisés avant tout traitement IA.
+
+\section{\texttt{seed.sql} --- Données de test}
+
+Ce fichier insère des données réalistes pour tester l'application :
+\begin{itemize}
+  \item \textbf{7 utilisateurs} : 1 admin, 1 RH, 5 employés (mot de passe BCrypt pour \texttt{password123}).
+  \item \textbf{6 employés} avec des postes variés (développeur, designer, comptable, marketing, technicien).
+  \item \textbf{5 congés} couvrant les trois statuts (validé, en attente, refusé).
+  \item \textbf{12 présences} sur une semaine type, incluant des retards.
+  \item \textbf{5 fiches de paie} pour mai 2025.
+\end{itemize}
+
+
+% ══════════════════════════════════════════════════════════════
+\chapter{Frontend (\texttt{frontend/})}
+% ══════════════════════════════════════════════════════════════
+
+\section{Fichiers de configuration}
+
+\subsection{\texttt{package.json}}
+Fichier de configuration NPM qui déclare :
+\begin{itemize}
+  \item Le nom du projet (\texttt{sgrh-intelligent-frontend}) et sa version.
+  \item Les \textbf{dépendances de production} : \texttt{react}, \texttt{react-dom}, \texttt{react-router-dom} (routage SPA), \texttt{axios} (appels HTTP), \texttt{recharts} (graphiques), \texttt{lucide-react} (icônes), \texttt{date-fns} (dates), \texttt{react-hot-toast} (notifications).
+  \item Les \textbf{dépendances de développement} : \texttt{vite} (bundler ultra-rapide), \texttt{tailwindcss} (framework CSS utilitaire), \texttt{autoprefixer}, \texttt{postcss}.
+  \item Les \textbf{scripts} : \texttt{dev} (serveur de développement), \texttt{build} (production), \texttt{preview}.
+\end{itemize}
+
+\subsection{\texttt{vite.config.js}}
+Configuration du bundler Vite :
+\begin{itemize}
+  \item Active le plugin \texttt{@vitejs/plugin-react} pour le support JSX.
+  \item Définit un alias \texttt{@} pointant vers \texttt{./src} pour des imports propres.
+  \item Configure un \textbf{proxy} : toutes les requêtes \texttt{/api} sont redirigées vers \texttt{http://localhost:8080} (backend Spring Boot), évitant les problèmes CORS en développement.
+  \item Le serveur de développement écoute sur le \textbf{port 3000}.
+\end{itemize}
+
+\subsection{\texttt{tailwind.config.js}}
+Configuration de TailwindCSS :
+\begin{itemize}
+  \item \texttt{content} : scanne tous les fichiers \texttt{.jsx/.tsx} dans \texttt{src/} pour générer uniquement les classes CSS utilisées (purge automatique).
+  \item \texttt{colors.primary} : palette de bleus personnalisée (50 à 900) pour l'identité visuelle.
+  \item \texttt{colors.sidebar} : couleurs sombres (\texttt{\#0f172a}) pour le menu latéral.
+  \item \texttt{fontFamily} : police \texttt{Inter} pour une typographie moderne.
+\end{itemize}
+
+\subsection{\texttt{postcss.config.js}}
+Active les plugins PostCSS nécessaires : \texttt{tailwindcss} (compilation des classes utilitaires) et \texttt{autoprefixer} (ajout automatique des préfixes navigateurs).
+
+\subsection{\texttt{index.html}}
+Point d'entrée HTML de l'application :
+\begin{itemize}
+  \item Charge la police \textbf{Inter} depuis Google Fonts.
+  \item Contient un \texttt{<div id="root">} où React monte l'application.
+  \item Référence \texttt{/src/main.jsx} comme module d'entrée JavaScript.
+\end{itemize}
+
+\section{Fichiers source (\texttt{src/})}
+
+\subsection{\texttt{main.jsx} --- Point d'entrée React}
+Ce fichier initialise l'application React :
+\begin{enumerate}
+  \item Crée la racine React avec \texttt{ReactDOM.createRoot}.
+  \item Enveloppe l'application dans \texttt{BrowserRouter} (routage côté client).
+  \item Enveloppe dans \texttt{AuthProvider} (contexte d'authentification global).
+  \item Ajoute le composant \texttt{Toaster} pour les notifications toast.
+  \item Active \texttt{StrictMode} pour détecter les problèmes potentiels.
+\end{enumerate}
+
+\subsection{\texttt{App.jsx} --- Routeur principal}
+Définit toutes les routes de l'application avec \textbf{React Router v6} :
+
+\begin{center}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Route} & \textbf{Composant} & \textbf{Accès} \\
+\hline
+\texttt{/login} & \texttt{LoginPage} & Public (redirige si déjà connecté) \\
+\hline
+\texttt{/dashboard} & \texttt{DashboardPage} & Tous les rôles authentifiés \\
+\hline
+\texttt{/employes} & \texttt{EmployesPage} & ADMIN, RH uniquement \\
+\hline
+\texttt{/conges} & \texttt{CongesPage} & Tous les rôles authentifiés \\
+\hline
+\texttt{/presences} & \texttt{PresencesPage} & Tous les rôles authentifiés \\
+\hline
+\texttt{/paie} & \texttt{PaiePage} & ADMIN, RH uniquement \\
+\hline
+\texttt{/documents} & \texttt{DocumentsPage} & Tous les rôles authentifiés \\
+\hline
+\texttt{/ia} & \texttt{IAPage} & ADMIN, RH uniquement \\
+\hline
+\texttt{/utilisateurs} & \texttt{UsersPage} & ADMIN uniquement \\
+\hline
+\end{tabularx}
+\end{center}
+
+Le composant \texttt{ProtectedRoute} vérifie :
+\begin{enumerate}
+  \item Si l'utilisateur est authentifié (sinon, redirection vers \texttt{/login}).
+  \item Si l'utilisateur a le rôle requis (sinon, redirection vers \texttt{/dashboard}).
+\end{enumerate}
+
+\subsection{\texttt{index.css} --- Styles TailwindCSS}
+Fichier CSS principal qui :
+\begin{itemize}
+  \item Importe les trois couches Tailwind : \texttt{@tailwind base}, \texttt{components}, \texttt{utilities}.
+  \item Définit des \textbf{composants réutilisables} dans \texttt{@layer components} :
+  \begin{itemize}
+    \item \texttt{.btn-primary}, \texttt{.btn-secondary}, \texttt{.btn-danger} : boutons stylisés.
+    \item \texttt{.card} : conteneur blanc avec ombre et coins arrondis.
+    \item \texttt{.input-field} : champs de formulaire avec focus ring bleu.
+    \item \texttt{.badge-success}, \texttt{.badge-warning}, \texttt{.badge-danger}, \texttt{.badge-info} : étiquettes colorées.
+  \end{itemize}
+\end{itemize}
+
+\section{Contexte (\texttt{context/})}
+
+\subsection{\texttt{AuthContext.jsx} --- Gestion de l'authentification}
+Ce fichier implémente le \textbf{Context API} de React pour gérer l'état d'authentification globalement :
+
+\begin{itemize}
+  \item \textbf{\texttt{user}} : objet contenant \texttt{id}, \texttt{email}, \texttt{role} de l'utilisateur connecté.
+  \item \textbf{\texttt{login(userData, token)}} : sauvegarde l'utilisateur et le token JWT dans \texttt{localStorage}.
+  \item \textbf{\texttt{logout()}} : supprime les données de \texttt{localStorage} et remet \texttt{user} à \texttt{null}.
+  \item \textbf{\texttt{getToken()}} : retourne le token JWT stocké.
+  \item \textbf{\texttt{loading}} : état booléen qui évite un flash de la page login pendant la vérification initiale.
+\end{itemize}
+
+Au montage du composant (\texttt{useEffect}), le contexte vérifie si un utilisateur et un token sont déjà stockés dans \texttt{localStorage} pour maintenir la session.
+
+\section{Services (\texttt{services/})}
+
+\subsection{\texttt{api.js} --- Client HTTP Axios}
+Ce fichier centralise \textbf{tous les appels API} de l'application :
+
+\begin{itemize}
+  \item Crée une instance Axios avec l'URL de base \texttt{http://localhost:8080/api}.
+  \item \textbf{Intercepteur de requête} : ajoute automatiquement le header \texttt{Authorization: Bearer <token>} à chaque requête si un token JWT existe.
+  \item \textbf{Intercepteur de réponse} : si le serveur retourne un code 401 (non autorisé), déconnecte l'utilisateur et redirige vers \texttt{/login}.
+  \item Exporte 7 \textbf{services} organisés par module :
+  \begin{itemize}
+    \item \texttt{authService} : \texttt{login()}, \texttt{register()}, \texttt{me()}.
+    \item \texttt{employeService} : CRUD complet (\texttt{getAll}, \texttt{getById}, \texttt{create}, \texttt{update}, \texttt{delete}).
+    \item \texttt{congeService} : \texttt{getAll}, \texttt{getByEmploye}, \texttt{create}, \texttt{valider}, \texttt{refuser}.
+    \item \texttt{presenceService} : \texttt{getAll}, \texttt{getByEmploye}, \texttt{pointer}.
+    \item \texttt{paieService} : \texttt{getAll}, \texttt{getByEmploye}, \texttt{generer}.
+    \item \texttt{documentService} : \texttt{getAll}, \texttt{upload} (multipart/form-data), \texttt{getById}.
+    \item \texttt{iaService} : \texttt{detecterAnomalies}, \texttt{segmenter}, \texttt{getRapport}, \texttt{getAnomalies}.
+  \end{itemize}
+\end{itemize}
+
+\section{Composants (\texttt{components/})}
+
+\subsection{\texttt{Layout.jsx} --- Mise en page}
+Composant de mise en page principal qui structure l'interface en deux zones :
+\begin{itemize}
+  \item \textbf{Sidebar} (à gauche, largeur fixe 256px) : menu de navigation.
+  \item \textbf{Zone principale} (à droite, flexible) : contient le \texttt{Header} en haut et le contenu de la page (\texttt{<Outlet />} de React Router) en dessous.
+\end{itemize}
+Utilise \texttt{flexbox} avec \texttt{h-screen overflow-hidden} pour occuper tout l'écran.
+
+\subsection{\texttt{Sidebar.jsx} --- Menu latéral}
+Menu de navigation vertical avec fond sombre (\texttt{\#0f172a}) :
+\begin{itemize}
+  \item \textbf{Logo} : icône Brain avec le texte « SGRH Intelligent ».
+  \item \textbf{Navigation} : liste de liens filtrés selon le rôle de l'utilisateur. Chaque lien a une icône Lucide et un label. Le lien actif est surligné en bleu (\texttt{NavLink} avec \texttt{isActive}).
+  \item \textbf{Pied} : avatar avec l'initiale de l'email, rôle affiché, et bouton de déconnexion.
+  \item \textbf{Filtrage par rôle} : chaque élément de navigation déclare les rôles autorisés. Seuls les éléments correspondant au rôle de l'utilisateur s'affichent.
+\end{itemize}
+
+\subsection{\texttt{Header.jsx} --- Barre supérieure}
+Barre horizontale contenant :
+\begin{itemize}
+  \item Un champ de \textbf{recherche} avec icône loupe.
+  \item Une \textbf{cloche de notifications} avec indicateur rouge.
+  \item L'\textbf{avatar} de l'utilisateur avec son nom et rôle traduit en français.
+\end{itemize}
+
+\section{Pages (\texttt{pages/})}
+
+\subsection{\texttt{LoginPage.jsx} --- Page de connexion}
+Page divisée en deux panneaux :
+\begin{itemize}
+  \item \textbf{Panneau gauche} (visible sur écrans larges) : branding avec gradient bleu, logo, description du projet, et trois cartes « IA / OCR / RH ».
+  \item \textbf{Panneau droit} : formulaire de connexion avec email et mot de passe, icônes, bouton de visibilité du mot de passe, et indicateur de chargement.
+  \item \textbf{Mode démo} : trois boutons (Admin / RH / Employé) permettent de se connecter \textbf{sans backend} avec des données fictives. Idéal pour la soutenance.
+\end{itemize}
+
+\subsection{\texttt{DashboardPage.jsx} --- Tableau de bord}
+Page d'accueil après connexion, composée de :
+\begin{itemize}
+  \item \textbf{4 cartes statistiques} : Total employés, Congés en attente, Présents aujourd'hui, Anomalies IA. Chaque carte affiche une tendance (hausse/baisse).
+  \item \textbf{Graphique à barres} (Recharts) : congés par mois, ventilés par type (annuels, maladie, sans solde).
+  \item \textbf{Graphique en anneau} : répartition des employés par département.
+  \item \textbf{Graphique d'aire} : présences et retards de la semaine.
+  \item \textbf{Liste d'activité récente} : 5 dernières actions du système avec horodatage.
+\end{itemize}
+
+\subsection{\texttt{EmployesPage.jsx} --- Gestion des employés}
+Interface CRUD complète pour les employés :
+\begin{itemize}
+  \item \textbf{Barre de recherche} filtrant en temps réel par nom, matricule ou département.
+  \item \textbf{Tableau} avec colonnes : avatar/nom, matricule (police monospace), poste, département (badge bleu), salaire (formaté MAD), statut (badge vert/rouge).
+  \item \textbf{Actions} par ligne : voir, modifier, supprimer (icônes avec hover coloré).
+  \item \textbf{Modal d'ajout} : formulaire en deux colonnes (nom, prénom, email, poste, département, salaire).
+  \item \textbf{Bouton export} pour télécharger la liste.
+\end{itemize}
+
+\subsection{\texttt{CongesPage.jsx} --- Gestion des congés}
+\begin{itemize}
+  \item \textbf{Filtres par statut} : boutons « Tous / En attente / Validé / Refusé ».
+  \item \textbf{Cartes de congé} : chaque demande affiche l'employé, les dates, le nombre de jours, le type, le statut (badge coloré) et le motif.
+  \item \textbf{Actions RH} : boutons Valider (vert) et Refuser (rouge) visibles uniquement pour les rôles RH/Admin sur les congés en attente.
+  \item \textbf{Modal de nouvelle demande} : formulaire avec sélecteurs de dates, type de congé et motif.
+\end{itemize}
+
+\subsection{\texttt{PresencesPage.jsx} --- Suivi des présences}
+\begin{itemize}
+  \item \textbf{Sélecteur de date} pour filtrer par jour.
+  \item \textbf{4 cartes} : Présents, Absents, Retards, Taux de présence (\%).
+  \item \textbf{Tableau des pointages} : employé, date, heure d'arrivée/départ (monospace), durée calculée, statut (« À l'heure » ou « En retard »).
+\end{itemize}
+
+\subsection{\texttt{PaiePage.jsx} --- Gestion de la paie}
+\begin{itemize}
+  \item \textbf{3 cartes} : masse salariale nette, salaire moyen, nombre de fiches générées.
+  \item \textbf{Graphique à barres} : évolution de la masse salariale sur 6 mois (couleur violet).
+  \item \textbf{Tableau des fiches} : employé, période, salaire brut, salaire net (en gras), bouton de téléchargement.
+  \item \textbf{Bouton « Générer les fiches »} et \textbf{« Exporter PDF »}.
+\end{itemize}
+
+\subsection{\texttt{DocumentsPage.jsx} --- Documents \& OCR}
+\begin{itemize}
+  \item \textbf{3 cartes statistiques} : total documents, OCR réussi, en traitement.
+  \item \textbf{Grille de documents} (2 colonnes) : chaque carte affiche le nom du fichier, le type, l'employé, le statut (Traité/En cours/Erreur), et un aperçu du texte extrait.
+  \item \textbf{Modal d'upload} : zone de drag-and-drop avec sélecteur de type de document.
+  \item \textbf{Modal de détail} : affiche toutes les métadonnées et le texte extrait complet par OCR.
+\end{itemize}
+
+\subsection{\texttt{IAPage.jsx} --- Analyse IA}
+Page la plus riche visuellement :
+\begin{itemize}
+  \item \textbf{Bouton « Lancer l'analyse »} avec animation de chargement (spinner).
+  \item \textbf{4 cartes} : anomalies détectées, taux de contamination (5\%), nombre de clusters (3), précision (92\%).
+  \item \textbf{Scatter plot} (nuage de points) : visualisation des clusters K-Means avec couleurs (vert=Normal, jaune=Retardataire, rouge=Absent).
+  \item \textbf{Graphique en anneau} : distribution des profils comportementaux.
+  \item \textbf{Tableau des anomalies} : employé, barre de score visuelle, type d'anomalie, niveau de risque (badge), cluster assigné (pastille colorée), date.
+\end{itemize}
+
+\subsection{\texttt{UsersPage.jsx} --- Gestion des utilisateurs (Admin)}
+\begin{itemize}
+  \item \textbf{3 cartes} : nombre d'administrateurs, comptes actifs, comptes désactivés.
+  \item \textbf{Tableau} : email, rôle (badge coloré par rôle), statut, dernière connexion.
+  \item \textbf{Modal de création} : email, mot de passe, sélection du rôle.
+\end{itemize}
+
+
+% ══════════════════════════════════════════════════════════════
+\chapter{Backend (\texttt{backend/})}
+% ══════════════════════════════════════════════════════════════
+
+\section{Configuration}
+
+\subsection{\texttt{pom.xml} --- Dépendances Maven}
+Le fichier POM déclare les dépendances du projet Spring Boot :
+
+\begin{center}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Dépendance} & \textbf{Rôle} \\
+\hline
+\texttt{spring-boot-starter-web} & Framework web, serveur Tomcat intégré, API REST \\
+\hline
+\texttt{spring-boot-starter-data-jpa} & ORM Hibernate, repositories auto-générés \\
+\hline
+\texttt{spring-boot-starter-security} & Spring Security, filtres d'authentification \\
+\hline
+\texttt{spring-boot-starter-validation} & Validation des DTOs avec annotations Jakarta \\
+\hline
+\texttt{mysql-connector-j} & Driver JDBC pour MySQL \\
+\hline
+\texttt{jjwt-api/impl/jackson} & Bibliothèque JWT pour génération et validation des tokens \\
+\hline
+\texttt{lombok} & Génération automatique de getters, setters, constructeurs \\
+\hline
+\texttt{spring-boot-starter-webflux} & WebClient pour appeler le microservice IA (HTTP réactif) \\
+\hline
+\end{tabularx}
+\end{center}
+
+\subsection{\texttt{application.yml} --- Configuration Spring}
+Fichier YAML qui configure :
+\begin{itemize}
+  \item \textbf{DataSource} : URL MySQL (\texttt{jdbc:mysql://localhost:3306/sgrh\_intelligent}), identifiants.
+  \item \textbf{JPA/Hibernate} : mode \texttt{ddl-auto: update} (création/modification automatique des tables).
+  \item \textbf{JWT} : clé secrète de signature (256 bits), durée d'expiration (24h = 86400000ms).
+  \item \textbf{Microservice IA} : URL du service FastAPI (\texttt{http://localhost:8000}).
+  \item \textbf{OCR} : chemin vers l'exécutable Tesseract et langues (\texttt{fra+ara}).
+  \item \textbf{Upload} : taille maximale des fichiers (10 Mo).
+\end{itemize}
+
+\subsection{\texttt{SgrhApplication.java} --- Classe principale}
+Point d'entrée de l'application Spring Boot. La méthode \texttt{main()} appelle \texttt{SpringApplication.run()} qui :
+\begin{enumerate}
+  \item Scanne tous les packages sous \texttt{ma.fsb.sgrh}.
+  \item Configure automatiquement les beans (auto-configuration).
+  \item Démarre le serveur Tomcat intégré sur le port 8080.
+\end{enumerate}
+
+\section{Entités JPA (\texttt{entity/})}
+
+Les entités sont des classes Java annotées \texttt{@Entity} qui correspondent directement aux tables MySQL. Lombok (\texttt{@Data}, \texttt{@Builder}) génère automatiquement les getters, setters, constructeurs et \texttt{toString()}.
+
+\subsection{\texttt{Utilisateur.java}}
+\begin{itemize}
+  \item Implémente \texttt{UserDetails} (interface Spring Security) pour être directement utilisable dans l'authentification.
+  \item Champs : \texttt{id}, \texttt{email} (unique), \texttt{motDePasse}, \texttt{role} (enum), \texttt{actif}.
+  \item La méthode \texttt{getAuthorities()} retourne le rôle avec le préfixe \texttt{ROLE\_} requis par Spring Security.
+  \item \texttt{isAccountNonLocked()} retourne la valeur de \texttt{actif}, permettant de bloquer un compte.
+  \item Callbacks \texttt{@PrePersist} et \texttt{@PreUpdate} pour horodater automatiquement.
+\end{itemize}
+
+\subsection{\texttt{Employe.java}}
+\begin{itemize}
+  \item Hérite conceptuellement de \texttt{Utilisateur} via une relation \texttt{@OneToOne}.
+  \item Contient les relations \texttt{@OneToMany} vers \texttt{Conge}, \texttt{Presence}, \texttt{FichePaie}, \texttt{Document}, \texttt{Anomalie} (cascade \texttt{ALL}).
+  \item Champs métier : \texttt{matricule}, \texttt{nom}, \texttt{prenom}, \texttt{poste}, \texttt{departement}, \texttt{salaire}, \texttt{soldeConge}, \texttt{dateEmbauche}.
+\end{itemize}
+
+\subsection{\texttt{Conge.java}}
+Demande de congé avec \texttt{dateDebut}, \texttt{dateFin}, \texttt{nbJours}, \texttt{typeConge} (enum), \texttt{statut} (enum, défaut \texttt{EN\_ATTENTE}), et \texttt{motif}.
+
+\subsection{\texttt{Presence.java}}
+Pointage quotidien avec \texttt{datePresence}, \texttt{heureArrivee} (\texttt{LocalTime}), \texttt{heureDepart}, et \texttt{estEnRetard} (booléen).
+
+\subsection{\texttt{FichePaie.java}}
+Fiche de paie mensuelle avec \texttt{mois}, \texttt{annee}, \texttt{salaireBase} et \texttt{salaireNet}.
+
+\subsection{\texttt{Document.java}}
+Document uploadé avec \texttt{nomFichier}, \texttt{typeDocument}, \texttt{cheminFichier}, \texttt{texteExtrait} (résultat OCR), et \texttt{statut} (défaut \texttt{EN\_COURS}).
+
+\subsection{\texttt{Anomalie.java}}
+Résultat d'analyse IA avec \texttt{scoreIsolation}, \texttt{typeAnomalie}, \texttt{niveauRisque}, \texttt{clusterLabel}, \texttt{dateDetection}, et \texttt{descriptionIa}.
+
+\subsection{Enums}
+Trois énumérations Java :
+\begin{itemize}
+  \item \texttt{Role} : \texttt{ADMIN}, \texttt{RH}, \texttt{EMPLOYE}.
+  \item \texttt{StatutConge} : \texttt{EN\_ATTENTE}, \texttt{VALIDE}, \texttt{REFUSE}.
+  \item \texttt{TypeConge} : \texttt{ANNUEL}, \texttt{MALADIE}, \texttt{SANS\_SOLDE}.
+\end{itemize}
+
+\section{Repositories (\texttt{repository/})}
+
+Les repositories sont des interfaces qui étendent \texttt{JpaRepository<Entity, Long>}. Spring Data JPA génère automatiquement les implémentations SQL à partir des noms de méthodes.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Repository} & \textbf{Méthodes personnalisées} \\
+\hline
+\texttt{UtilisateurRepository} & \texttt{findByEmail()}, \texttt{existsByEmail()} \\
+\hline
+\texttt{EmployeRepository} & \texttt{findByMatricule()}, \texttt{findByUtilisateurId()}, \texttt{findByDepartement()} \\
+\hline
+\texttt{CongeRepository} & \texttt{findByEmployeId()}, \texttt{findByStatut()}, \texttt{findByEmployeIdAndStatut()} \\
+\hline
+\texttt{PresenceRepository} & \texttt{findByDatePresence()}, \texttt{findByEmployeIdAndDatePresenceBetween()}, \texttt{countByDatePresenceAndEstEnRetardTrue()} \\
+\hline
+\texttt{FichePaieRepository} & \texttt{findByEmployeId()}, \texttt{findByMoisAndAnnee()} \\
+\hline
+\texttt{DocumentRepository} & \texttt{findByEmployeId()}, \texttt{findByStatut()} \\
+\hline
+\texttt{AnomalieRepository} & \texttt{findByEmployeId()}, \texttt{findByNiveauRisque()}, \texttt{findTop10ByOrderByDateDetectionDesc()} \\
+\hline
+\end{tabularx}
+\end{center}
+
+\section{Sécurité (\texttt{security/})}
+
+\subsection{\texttt{JwtService.java} --- Service JWT}
+Gère le cycle de vie des tokens JWT :
+\begin{itemize}
+  \item \textbf{\texttt{generateToken()}} : crée un token signé HS256 contenant l'email comme \texttt{subject}, le rôle dans les claims, et une expiration de 24h.
+  \item \textbf{\texttt{extractUsername()}} : décode le token et extrait l'email.
+  \item \textbf{\texttt{isTokenValid()}} : vérifie que le token n'est pas expiré et que le username correspond.
+  \item La clé de signature est décodée depuis Base64 et utilise HMAC-SHA256.
+\end{itemize}
+
+\subsection{\texttt{JwtAuthFilter.java} --- Filtre JWT}
+Filtre Spring qui intercepte \textbf{chaque requête HTTP} :
+\begin{enumerate}
+  \item Extrait le header \texttt{Authorization}.
+  \item Si le header commence par \texttt{Bearer }, extrait le token.
+  \item Décode l'email depuis le token via \texttt{JwtService}.
+  \item Charge l'utilisateur depuis la base de données.
+  \item Vérifie la validité du token.
+  \item Si valide, crée un objet \texttt{Authentication} et le place dans le \texttt{SecurityContext}.
+\end{enumerate}
+
+\subsection{\texttt{SecurityConfig.java} --- Configuration de sécurité}
+Classe de configuration Spring Security :
+\begin{itemize}
+  \item \textbf{CORS} : autorise les requêtes depuis \texttt{http://localhost:3000} (frontend React).
+  \item \textbf{CSRF} : désactivé (API stateless avec JWT).
+  \item \textbf{Règles d'autorisation} :
+  \begin{itemize}
+    \item \texttt{/api/auth/**} : accès public (login, register).
+    \item \texttt{/api/employes/**}, \texttt{/api/fiches-paie/**}, \texttt{/api/ia/**} : rôles ADMIN ou RH.
+    \item \texttt{/api/utilisateurs/**} : ADMIN uniquement.
+    \item Toutes les autres routes : authentifié.
+  \end{itemize}
+  \item \textbf{Session} : mode \texttt{STATELESS} (pas de session HTTP, authentification par token uniquement).
+  \item \textbf{Password encoder} : \texttt{BCryptPasswordEncoder} pour le hashage des mots de passe.
+\end{itemize}
+
+\section{Contrôleurs (\texttt{controller/})}
+
+\subsection{\texttt{AuthController.java}}
+\begin{itemize}
+  \item \textbf{POST \texttt{/api/auth/login}} : authentifie l'utilisateur, génère un token JWT, retourne le token et les infos utilisateur.
+  \item \textbf{POST \texttt{/api/auth/register}} : crée un nouveau compte avec le rôle EMPLOYE par défaut.
+\end{itemize}
+
+\subsection{\texttt{EmployeController.java}}
+CRUD complet sur les employés :
+\begin{itemize}
+  \item \textbf{GET} \texttt{/api/employes} : liste tous les employés.
+  \item \textbf{GET} \texttt{/api/employes/\{id\}} : détail d'un employé.
+  \item \textbf{POST} \texttt{/api/employes} : création (ADMIN/RH).
+  \item \textbf{PUT} \texttt{/api/employes/\{id\}} : modification (ADMIN/RH).
+  \item \textbf{DELETE} \texttt{/api/employes/\{id\}} : suppression (ADMIN uniquement).
+\end{itemize}
+
+\subsection{\texttt{CongeController.java}}
+\begin{itemize}
+  \item \textbf{GET} \texttt{/api/conges} et \texttt{/api/conges/employe/\{id\}} : liste des congés.
+  \item \textbf{GET} \texttt{/api/conges/en-attente} : congés en attente de validation.
+  \item \textbf{POST} \texttt{/api/conges} : soumission d'une demande (statut \texttt{EN\_ATTENTE}).
+  \item \textbf{PUT} \texttt{/api/conges/\{id\}/valider} : valide le congé et \textbf{décrémente le solde} de l'employé.
+  \item \textbf{PUT} \texttt{/api/conges/\{id\}/refuser} : refuse le congé.
+\end{itemize}
+
+\subsection{\texttt{PresenceController.java}}
+\begin{itemize}
+  \item \textbf{GET} par employé ou par date.
+  \item \textbf{POST} \texttt{/api/presences} : enregistrement d'un pointage. Détecte automatiquement si l'employé est en retard (arrivée après 08h30).
+\end{itemize}
+
+\subsection{\texttt{DocumentController.java}}
+\begin{itemize}
+  \item \textbf{GET} \texttt{/api/documents} et \texttt{/api/documents/\{id\}}.
+  \item \textbf{POST} \texttt{/api/documents/upload} : reçoit un fichier \texttt{multipart/form-data}, le sauvegarde dans le dossier \texttt{uploads/}, crée l'entrée en base avec statut \texttt{EN\_COURS}. L'appel à Tesseract OCR est prévu en asynchrone.
+\end{itemize}
+
+\subsection{\texttt{IAController.java}}
+Pont entre le backend et le microservice IA Python :
+\begin{itemize}
+  \item \textbf{POST} \texttt{/api/ia/detect} : appelle \texttt{POST http://localhost:8000/detect} via WebClient.
+  \item \textbf{POST} \texttt{/api/ia/cluster} : appelle \texttt{POST http://localhost:8000/cluster}.
+  \item \textbf{GET} \texttt{/api/ia/rapport} : récupère le rapport consolidé depuis FastAPI.
+  \item \textbf{GET} \texttt{/api/ia/anomalies} : retourne les 10 dernières anomalies depuis MySQL.
+\end{itemize}
+
+\subsection{\texttt{DashboardController.java}}
+\begin{itemize}
+  \item \textbf{GET} \texttt{/api/dashboard/stats} : retourne les 4 indicateurs clés (total employés, congés en attente, présents aujourd'hui, anomalies).
+\end{itemize}
+
+\section{DTOs (\texttt{dto/})}
+
+\begin{itemize}
+  \item \textbf{\texttt{AuthRequest}} : objet de requête login/register avec validation (\texttt{@Email}, \texttt{@NotBlank}).
+  \item \textbf{\texttt{AuthResponse}} : objet de réponse contenant le token JWT et un sous-objet \texttt{UserDto} (id, email, role).
+\end{itemize}
+
+
+% ══════════════════════════════════════════════════════════════
+\chapter{Microservice IA (\texttt{microservice-ia/})}
+% ══════════════════════════════════════════════════════════════
+
+\section{\texttt{requirements.txt}}
+Dépendances Python du microservice :
+\begin{center}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Package} & \textbf{Version} & \textbf{Rôle} \\
+\hline
+\texttt{fastapi} & 0.104.1 & Framework web asynchrone haute performance \\
+\hline
+\texttt{uvicorn} & 0.24.0 & Serveur ASGI pour FastAPI \\
+\hline
+\texttt{scikit-learn} & 1.3.2 & Algorithmes ML (Isolation Forest, K-Means, StandardScaler) \\
+\hline
+\texttt{pandas} & 2.1.4 & Manipulation de données tabulaires (DataFrames) \\
+\hline
+\texttt{numpy} & 1.26.2 & Calcul numérique \\
+\hline
+\texttt{matplotlib} & 3.8.2 & Génération de graphiques pour les rapports \\
+\hline
+\texttt{pydantic} & 2.5.2 & Validation et sérialisation des données (modèles de requête/réponse) \\
+\hline
+\end{tabularx}
+\end{center}
+
+\section{\texttt{main.py} --- Serveur FastAPI}
+
+\subsection{Configuration}
+\begin{itemize}
+  \item CORS activé pour \texttt{localhost:3000} (React) et \texttt{localhost:8080} (Spring Boot).
+  \item Le serveur écoute sur le \textbf{port 8000}.
+  \item Documentation Swagger automatique disponible sur \texttt{http://localhost:8000/docs}.
+\end{itemize}
+
+\subsection{Modèles Pydantic}
+Modèles de validation des données entrantes et sortantes :
+\begin{itemize}
+  \item \textbf{\texttt{PresenceRecord}} : un enregistrement de présence avec \texttt{employe\_id}, \texttt{heure\_arrivee}, \texttt{heure\_depart}, \texttt{duree\_travail}, \texttt{est\_retard}, \texttt{nb\_absences\_semaine}.
+  \item \textbf{\texttt{DetectRequest}} : liste de \texttt{PresenceRecord} + taux de contamination (défaut 5\%).
+  \item \textbf{\texttt{ClusterRequest}} : liste de \texttt{PresenceRecord} + nombre de clusters (défaut 3).
+  \item \textbf{\texttt{AnomalyResult}} : résultat pour un employé (score, anomalie, cluster, risque).
+\end{itemize}
+
+\subsection{Endpoint \texttt{POST /detect} --- Isolation Forest}
+Algorithme de détection d'anomalies non supervisé :
+\begin{enumerate}
+  \item Reçoit un dataset JSON de présences (minimum 10 enregistrements).
+  \item Extrait les 5 features : heure d'arrivée, heure de départ, durée de travail, retard, absences.
+  \item Entraîne un modèle \texttt{IsolationForest} avec 100 estimateurs et un taux de contamination de 5\%.
+  \item Calcule le \texttt{decision\_function} (score brut) et normalise entre 0 et 1 (1 = plus anormal).
+  \item Applique en parallèle \texttt{K-Means} (k=3) après normalisation \texttt{StandardScaler}.
+  \item Attribue un niveau de risque : score $> 0.7$ = ÉLEVÉ, $> 0.5$ = MOYEN, sinon FAIBLE.
+  \item Retourne uniquement les anomalies détectées avec leur score, cluster et niveau de risque.
+\end{enumerate}
+
+\subsection{Endpoint \texttt{POST /cluster} --- K-Means}
+Segmentation des profils comportementaux :
+\begin{enumerate}
+  \item Reçoit le dataset JSON.
+  \item Normalise les features avec \texttt{StandardScaler} (moyenne 0, écart-type 1).
+  \item Applique \texttt{K-Means} avec 3 clusters.
+  \item Attribue un label à chaque cluster :
+  \begin{itemize}
+    \item \textbf{Cluster 0 - Normal} : présence régulière, peu de retards.
+    \item \textbf{Cluster 1 - Retardataire} : retards fréquents, irrégularités d'horaires.
+    \item \textbf{Cluster 2 - Absent} : taux d'absence élevé.
+  \end{itemize}
+  \item Retourne les labels par employé, les centres des clusters et la distribution.
+\end{enumerate}
+
+\subsection{Endpoint \texttt{GET /rapport}}
+Retourne un rapport consolidé avec le résumé des analyses et des recommandations RH :
+\begin{itemize}
+  \item Nombre d'employés analysés et anomalies détectées.
+  \item Distribution des clusters.
+  \item Recommandations d'actions (entretiens, ajustement d'horaires).
+\end{itemize}
+
+\subsection{Endpoint \texttt{GET /generate-dataset}}
+Génère un \textbf{dataset synthétique} pour les tests :
+\begin{itemize}
+  \item 100 employés $\times$ 180 jours = 18~000 enregistrements.
+  \item 95\% des employés ont un comportement normal (arrivée $\sim$ 8h00, départ $\sim$ 17h00).
+  \item 5\% (employés 1 à 5) ont un comportement anormal injecté (arrivée $\sim$ 9h30, départ $\sim$ 16h00, plus d'absences).
+  \item Utilise \texttt{numpy.random} avec une seed fixe (42) pour la reproductibilité.
+\end{itemize}
+
+
+% ══════════════════════════════════════════════════════════════
+\chapter{Fonctionnement de l'application}
+% ══════════════════════════════════════════════════════════════
+
+\section{Flux d'authentification (JWT)}
+
+\begin{enumerate}
+  \item L'utilisateur saisit son email et mot de passe sur la page \texttt{LoginPage}.
+  \item Le frontend envoie un \texttt{POST /api/auth/login} avec les identifiants.
+  \item Le backend vérifie les identifiants via \texttt{AuthenticationManager} (comparaison BCrypt).
+  \item Si valide, \texttt{JwtService.generateToken()} crée un token JWT signé HS256 contenant l'email et le rôle, valide 24h.
+  \item Le token et les infos utilisateur sont retournés au frontend.
+  \item Le frontend stocke le token dans \texttt{localStorage} via \texttt{AuthContext.login()}.
+  \item Pour chaque requête suivante, l'intercepteur Axios ajoute \texttt{Authorization: Bearer <token>}.
+  \item Côté backend, \texttt{JwtAuthFilter} intercepte chaque requête, décode le token, et place l'authentification dans le \texttt{SecurityContext}.
+\end{enumerate}
+
+\section{Flux de gestion des congés}
+
+\begin{enumerate}
+  \item L'employé ouvre la page \texttt{CongesPage} et clique sur « Nouvelle demande ».
+  \item Il remplit le formulaire (dates, type, motif) et soumet.
+  \item Le frontend envoie un \texttt{POST /api/conges} avec le statut \texttt{EN\_ATTENTE}.
+  \item Le congé est sauvegardé en base de données.
+  \item Le responsable RH voit les congés en attente (filtré par statut).
+  \item Il clique sur « Valider » $\rightarrow$ \texttt{PUT /api/conges/\{id\}/valider} :
+  \begin{itemize}
+    \item Le statut passe à \texttt{VALIDE}.
+    \item Le \texttt{soldeConge} de l'employé est décrémenté de \texttt{nbJours}.
+  \end{itemize}
+  \item Ou il clique sur « Refuser » $\rightarrow$ le statut passe à \texttt{REFUSE}.
+\end{enumerate}
+
+\section{Flux de détection d'anomalies IA}
+
+\begin{enumerate}
+  \item Le responsable RH ouvre la page \texttt{IAPage} et clique sur « Lancer l'analyse ».
+  \item Le frontend envoie un \texttt{POST /api/ia/detect} au backend Spring Boot.
+  \item Le backend récupère les données de présence depuis MySQL.
+  \item Le backend transmet ces données au microservice FastAPI via \texttt{WebClient} (\texttt{POST http://localhost:8000/detect}).
+  \item FastAPI exécute l'algorithme \textbf{Isolation Forest} :
+  \begin{itemize}
+    \item Entraîne le modèle sur les 5 features de présence.
+    \item Identifie les points aberrants (score d'anomalie normalisé).
+  \end{itemize}
+  \item En parallèle, FastAPI applique \textbf{K-Means} (k=3) pour segmenter les profils.
+  \item Les résultats (anomalies + clusters) sont retournés au backend.
+  \item Le backend sauvegarde les anomalies dans la table \texttt{anomalie} de MySQL.
+  \item Les résultats sont envoyés au frontend qui les affiche :
+  \begin{itemize}
+    \item \textbf{Scatter plot} des clusters.
+    \item \textbf{Tableau} des anomalies avec barres de score visuelles.
+    \item \textbf{Anneau} de distribution des profils.
+  \end{itemize}
+\end{enumerate}
+
+\section{Flux d'analyse OCR de documents}
+
+\begin{enumerate}
+  \item L'utilisateur ouvre \texttt{DocumentsPage} et clique sur « Uploader un document ».
+  \item Il glisse un fichier (PDF, PNG ou JPG) dans la zone de drop ou le sélectionne.
+  \item Le frontend envoie un \texttt{POST /api/documents/upload} en \texttt{multipart/form-data}.
+  \item Le backend :
+  \begin{enumerate}
+    \item Sauvegarde le fichier physiquement dans le dossier \texttt{uploads/}.
+    \item Crée une entrée en base avec le statut \texttt{EN\_COURS}.
+    \item Invoque Tesseract OCR sur le fichier (en asynchrone).
+  \end{enumerate}
+  \item Tesseract analyse l'image/PDF et extrait le texte (français et arabe supportés).
+  \item Le texte extrait est sauvegardé dans le champ \texttt{texte\_extrait} de la table \texttt{document}.
+  \item Le statut passe à \texttt{TRAITE} (ou \texttt{ERREUR} si échec).
+  \item L'utilisateur peut consulter le texte extrait dans le modal de détail.
+\end{enumerate}
+
+\section{Mode démonstration}
+
+L'application intègre un \textbf{mode démo} qui permet de la présenter \textbf{sans aucun backend} :
+\begin{itemize}
+  \item Sur la page de login, trois boutons (Admin / RH / Employé) créent un utilisateur fictif avec un faux token.
+  \item Toutes les pages contiennent des \textbf{données mock} (tableaux et graphiques pré-remplis).
+  \item Les actions (ajout, validation, lancement IA) affichent des \textbf{notifications toast} de succès.
+  \item Ce mode est idéal pour la \textbf{soutenance} si le backend ou la base de données ne sont pas disponibles.
+\end{itemize}
+
+
+% ══════════════════════════════════════════════════════════════
+\chapter{Guide de démarrage}
+% ══════════════════════════════════════════════════════════════
+
+\section{Prérequis}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Outil} & \textbf{Version} & \textbf{Installation} \\
+\hline
+Node.js & $\geq$ 18.x & \url{https://nodejs.org} \\
+\hline
+Java JDK & 21 & \url{https://adoptium.net} \\
+\hline
+Python & 3.11+ & \url{https://python.org} \\
+\hline
+MySQL & 8.x & \url{https://dev.mysql.com/downloads/} \\
+\hline
+Tesseract & 5.x & \url{https://github.com/tesseract-ocr/tesseract} \\
+\hline
+\end{tabularx}
+\end{center}
+
+\section{Étapes de lancement}
+
+\subsection{Étape 1 : Base de données}
+\begin{lstlisting}[language=bash,title={Initialisation MySQL}]
+mysql -u root -p < database/schema.sql
+mysql -u root -p < database/seed.sql
+\end{lstlisting}
+
+\subsection{Étape 2 : Backend Spring Boot}
+\begin{lstlisting}[language=bash,title={Lancement du backend (port 8080)}]
+cd backend
+./mvnw spring-boot:run
+\end{lstlisting}
+
+\subsection{Étape 3 : Microservice IA}
+\begin{lstlisting}[language=bash,title={Lancement du microservice IA (port 8000)}]
+cd microservice-ia
+pip install -r requirements.txt
+python main.py
+\end{lstlisting}
+La documentation Swagger est disponible sur \texttt{http://localhost:8000/docs}.
+
+\subsection{Étape 4 : Frontend React}
+\begin{lstlisting}[language=bash,title={Lancement du frontend (port 3000)}]
+cd frontend
+npm install
+npm run dev
+\end{lstlisting}
+
+\section{Comptes de test}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{|l|l|l|X|}
+\hline
+\textbf{Email} & \textbf{Mot de passe} & \textbf{Rôle} & \textbf{Accès} \\
+\hline
+\texttt{admin@sgrh.ma} & \texttt{password123} & ADMIN & Accès complet à toutes les fonctionnalités \\
+\hline
+\texttt{rh@sgrh.ma} & \texttt{password123} & RH & Gestion RH, IA, paie (pas la gestion des comptes) \\
+\hline
+\texttt{ahmed.benali@sgrh.ma} & \texttt{password123} & EMPLOYE & Congés, présences, documents personnels \\
+\hline
+\end{tabularx}
+\end{center}
+
+
+\end{document}

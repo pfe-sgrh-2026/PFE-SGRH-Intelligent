@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SGRH Intelligent — Lancement</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 50%, #3b82f6 100%);
+      color: #fff;
+    }
+    .card {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 48px 40px;
+      max-width: 480px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .logo { font-size: 48px; margin-bottom: 12px; }
+    h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+    .subtitle { font-size: 14px; opacity: 0.8; margin-bottom: 32px; }
+    .info-box {
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 24px;
+      text-align: left;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+    .info-box strong { color: #93c5fd; }
+    .btn {
+      display: inline-block;
+      width: 100%;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 12px;
+    }
+    .btn-primary {
+      background: #fff;
+      color: #1e3a5f;
+    }
+    .btn-primary:hover { background: #e0e7ff; transform: translateY(-2px); }
+    .btn-secondary {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.25); }
+    .status {
+      margin-top: 16px;
+      font-size: 14px;
+      min-height: 20px;
+    }
+    .spinner {
+      display: inline-block;
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .error { color: #fca5a5; }
+    .success { color: #86efac; }
+    .footer {
+      margin-top: 28px;
+      font-size: 12px;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">&#128188;</div>
+    <h1>SGRH Intelligent</h1>
+    <p class="subtitle">Système de Gestion des Ressources Humaines</p>
+
+    <div class="info-box">
+      <strong>Compte Administrateur :</strong><br/>
+      Email : admin@sgrh.ma<br/>
+      Mot de passe : password123<br/><br/>
+      <strong>Services requis :</strong><br/>
+      Backend : localhost:8080 &nbsp;|&nbsp; IA : localhost:8000
+    </div>
+
+    <button class="btn btn-primary" id="btnAutoLogin" onclick="autoLogin()">
+      Connexion automatique (Admin)
+    </button>
+
+    <button class="btn btn-secondary" onclick="window.location.href='/login'">
+      Ouvrir la page de connexion
+    </button>
+
+    <div class="status" id="status"></div>
+
+    <div class="footer">
+      Projet de Fin d'Etudes — MANSOUR Aymane, FOUKOU Issa, BADIA Salahedine
+    </div>
+  </div>
+
+  <script>
+    const API = 'http://localhost:8080';
+
+    async function autoLogin() {
+      const btn = document.getElementById('btnAutoLogin');
+      const status = document.getElementById('status');
+      btn.disabled = true;
+      status.innerHTML = '<span class="spinner"></span> Connexion en cours...';
+
+      try {
+        const res = await fetch(API + '/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: 'admin@sgrh.ma', motDePasse: 'password123' })
+        });
+
+        if (!res.ok) {
+          throw new Error('Identifiants invalides ou backend injoignable (HTTP ' + res.status + ')');
+        }
+
+        const data = await res.json();
+
+        // Stocker le token et les infos utilisateur (memes cles que AuthContext)
+        localStorage.setItem('sgrh_token', data.token);
+        localStorage.setItem('sgrh_user', JSON.stringify({
+          email: data.email || 'admin@sgrh.ma',
+          role: data.role || 'ADMIN'
+        }));
+
+        status.innerHTML = '<span class="success">Connecte ! Redirection...</span>';
+        setTimeout(() => { window.location.href = '/dashboard'; }, 600);
+
+      } catch (err) {
+        status.innerHTML = '<span class="error">Erreur : ' + err.message + '</span>';
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>

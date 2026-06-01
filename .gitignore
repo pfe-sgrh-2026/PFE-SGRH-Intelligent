@@ -1,0 +1,44 @@
+# === Node / Frontend ===
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+
+# === Java / Backend ===
+backend/target/
+backend/.mvn/
+backend/*.iml
+backend/.idea/
+
+# === Python / Microservice IA ===
+microservice-ia/__pycache__/
+microservice-ia/.venv/
+microservice-ia/venv/
+microservice-ia/*.pyc
+
+# === MySQL Data ===
+/mysql_data/
+
+# === IDE ===
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# === LaTeX build files ===
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+
+# === Tools / Binaires ===
+tools/
+apache-maven-*.zip
+
+# === OS ===
+desktop.ini

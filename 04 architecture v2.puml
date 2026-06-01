@@ -1,0 +1,79 @@
+@startuml Architecture
+
+skinparam backgroundColor #FFFFFF
+skinparam componentStyle rectangle
+skinparam component {
+  BackgroundColor #D6E8F7
+  BorderColor #1A3A5C
+  FontName Arial
+  FontSize 13
+  FontColor #1A3A5C
+}
+skinparam database {
+  BackgroundColor #FDE8CC
+  BorderColor #E65100
+  FontName Arial
+  FontSize 13
+  FontColor #1A3A5C
+}
+skinparam package {
+  BackgroundColor #EBF5FB
+  BorderColor #2563A8
+  FontName Arial
+  FontSize 13
+  FontColor #2563A8
+  FontStyle bold
+}
+skinparam note {
+  BackgroundColor #FFFDE7
+  BorderColor #F9A825
+  FontName Arial
+  FontSize 11
+}
+skinparam ArrowColor #1A3A5C
+skinparam ArrowThickness 2
+skinparam ArrowFontName Arial
+skinparam ArrowFontSize 11
+skinparam ArrowFontColor #1A3A5C
+skinparam shadowing false
+skinparam linetype polyline
+
+title Architecture du Système RH Intelligent
+
+' ── Disposition verticale claire ──────────
+
+package "Couche Présentation" {
+  [React JS\n(port 3000)] as FRONT
+}
+
+package "Couche Backend" {
+  [Spring Boot / Java\n(port 8080)] as BACK
+}
+
+package "Microservice IA" {
+  [FastAPI / Python\n(port 8000)] as IA
+}
+
+package "Module OCR" {
+  [Tesseract OCR] as OCR
+}
+
+package "Couche Données" {
+  database "MySQL\n(port 3306)" as DB
+}
+
+note right of IA
+  Isolation Forest
+  K-Means
+end note
+
+' ── Flèches propres, une direction claire ──
+
+FRONT  -down-> BACK : HTTP REST + JWT
+BACK   -right-> IA  : POST /detect\n/cluster
+IA     -left->  BACK : résultats IA
+BACK   -down->  OCR  : fichier PDF/Image
+OCR    -up->    BACK : texte extrait
+BACK   -down->  DB   : JPA / SQL
+
+@enduml

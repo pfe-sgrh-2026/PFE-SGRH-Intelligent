@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: sgrh-intelligent
+  datasource:
+    url: jdbc:mysql://localhost:3306/sgrh_intelligent?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+server:
+  port: 8080
+
+# JWT Configuration
+jwt:
+  secret: SGRHIntelligent2025SecretKeyForJWTTokenGenerationMustBeLongEnough256Bits
+  expiration: 86400000  # 24 heures
+
+# Microservice IA
+ia:
+  service:
+    url: http://localhost:8000
+
+# OCR Configuration
+ocr:
+  tesseract:
+    path: C:/Program Files/Tesseract-OCR/tesseract.exe
+    lang: fra+ara
