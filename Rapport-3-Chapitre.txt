@@ -1,169 +1,0 @@
-
-
-
-Université Hassan II de Casablanca
-Faculté des Sciences Ben M'Sick
-Département Mathématiques et Informatique
-
-Rapport de Projet de Fin d'Études
-Licence - 3ème Année Développement Informatique
-2025 - 2026
-
-Système de Gestion des Ressources Humaines Intelligent
-avec Détection d'Anomalies par IA et Analyse OCR de Documents
-
-
-Encadré par :
-Pr. Ichrak BENAMRI
-Réalisé par :
-MANSOUR Aymane
-FOUKOU  Issa
-BADIA Salahedine
-Chapitre 1
-Cahier des Charges et Déroulement du Projet
-
-
-1.1  Présentation du projet
-Ce projet consiste en la conception et le développement d'un Système de Gestion des Ressources Humaines (SGRH) intelligent. Il digitalise les processus RH classiques (congés, présences, paie) et y intègre des modules d'intelligence artificielle pour la détection d'anomalies comportementales, ainsi qu'un moteur OCR pour le traitement automatique de documents administratifs.
-
-1.2  Problématiques et Besoins
-Les problématiques à l'origine de ce projet sont :
-• Gestion manuelle et chronophage des congés, présences et fiches de paie.
-• Absence d'outil de détection proactive des anomalies (retards, absences suspectes).
-• Traitement laborieux des documents administratifs papier ou numérisés.
-• Manque d'un tableau de bord centralisé pour les indicateurs RH.
-• Nécessité de conformité avec la loi marocaine 09-08 sur la protection des données personnelles.
-
-1.3  Objectifs
-1. Développer une application web sécurisée couvrant les modules congés, présences et paie.
-2. Intégrer un module IA de détection d'anomalies (Isolation Forest + K-Means).
-3. Implémenter un moteur OCR (Tesseract) pour l'extraction automatique de texte depuis des documents.
-4. Concevoir une base de données MySQL robuste et conforme à la loi 09-08.
-5. Fournir un tableau de bord interactif avec indicateurs clés en temps réel.
-
-1.4  Déroulement du Projet
-Le projet est structuré en quatre phases sur 13 semaines :
-
-Phase 1 - S1 à S3Analyse des besoins, conception MCD/MLD (Merise), diagrammes UML, maquettes UI.Phase 2 - S3 à S9Implémentation de la base de données MySQL, backend Spring Boot, frontend React JS, microservice IA Python et module OCR Tesseract.Phase 3 - S9 à S11Intégration des modules, tests unitaires et d'intégration, correction des bugs.Phase 4 - S3 à S13Rédaction continue du rapport, préparation et soutenance finale.
-
-1.5  Diagramme de GANTT
-
-TâcheS1S2S3S4S5S6S7S8S9S10S11S12S13Analyse des besoinsConception MCD/MLDDiagrammes UMLMaquettes UIBase de données MySQLBackend Spring BootFrontend React JSModule IA PythonModule OCR TesseractIntégration & TestsRédaction du rapportPréparation soutenance
-Légende : ¦ Phase 1   ¦ Phase 2   ¦ Phase 3   ¦ Phase 4
-
-
-1.6  Distribution des Rôles
-
-MembreDomaineResponsabilités principalesAymane (LAHLOU)Base de donnéesConception MCD/MLD (Merise), implémentation MySQL, scripts SQL, conformité loi 09-08.IssaBackend & IADéveloppement Spring Boot, API REST, authentification JWT/RBAC, modules IA (Isolation Forest, K-Means) et OCR (Tesseract).SalahedineFrontendDéveloppement React JS, tableau de bord, formulaires, intégration API, visualisation des résultats IA.
-
-1.7  Méthodologie de Gestion
-Nous adoptons une approche Agile/Scrum adaptée au contexte académique : itérations de deux semaines, réunions hebdomadaires de synchronisation, et gestion du code via Git/GitHub avec branches par fonctionnalité.
-
-VersioningGit / GitHub - branches par fonctionnalité, pull requests.Suivi tâchesTrello - backlog, colonnes En cours / Terminé.CommunicationWhatsApp / Discord - coordination quotidienne.IDEIntelliJ IDEA (Java/Spring Boot), VS Code (React JS, Python).BDDMySQL Workbench pour la conception et l'administration.Chapitre 2
-Étude Bibliographique
-
-2.1  Concepts de Base
-2.1.1  Système de Gestion des Ressources Humaines (SGRH)
-Un SGRH (ou HRIS - Human Resource Information System) est une application qui centralise et automatise les processus administratifs RH : recrutement, gestion des congés, présences, paie et suivi des performances. La transformation numérique de ces systèmes vise à réduire la charge administrative, améliorer la fiabilité des données et offrir des outils d'aide à la décision.
-
-2.1.2  Intelligence Artificielle appliquée aux RH
-L'IA appliquée aux RH repose sur des algorithmes d'apprentissage automatique (Machine Learning) qui analysent les données RH pour détecter des patterns, prédire des comportements ou segmenter des populations d'employés. Les approches non supervisées sont particulièrement adaptées lorsque les données ne sont pas étiquetées, ce qui est le cas habituel en contexte RH.
-
-2.1.3  OCR (Optical Character Recognition)
-L'OCR est une technologie qui convertit des images contenant du texte (documents scannés, photos) en texte machine éditable. Dans le contexte RH, elle permet d'automatiser la numérisation et l'indexation des documents administratifs : certificats médicaux, contrats, attestations. Le moteur Tesseract (Google) est l'un des plus performants en open source, supportant plus de 100 langues dont le français et l'arabe.
-
-2.1.4  Architecture Microservices
-L'architecture microservices structure une application en services indépendants, chacun dédié à une responsabilité précise, communicant via des API REST. Dans notre projet, le module IA est isolé dans un microservice Python/FastAPI indépendant du backend Java, garantissant l'indépendance technologique et la scalabilité de chaque composant.
-
-2.1.5  Méthode Merise
-Merise est une méthode française de conception de systèmes d'information qui sépare la modélisation des données (MCD - Modèle Conceptuel de Données) de la modélisation des traitements. Elle permet une conception rigoureuse et documentée de la base de données avant toute implémentation SQL.
-
-
-2.2  Modèles IA et Technologies Utilisées
-2.2.1  Isolation Forest
-Introduit par Liu et al. (2008), Isolation Forest est un algorithme de détection d'anomalies non supervisé. Son principe : les anomalies, étant rares et atypiques, sont plus faciles à isoler que les points normaux dans un arbre de décision aléatoire. Le score d'anomalie est calculé par le nombre moyen de coupures nécessaires pour isoler un point.
-
-CaractéristiqueDétailTypeDétection d'anomalies - non superviséAvantage cléNe nécessite pas de données étiquetées (labels)Paramètre principalContamination = 5% (proportion estimée d'anomalies)ComplexitéO(n) - rapide et scalableUsage dans le projetDétecter les comportements anormaux dans les données de présence
-2.2.2  K-Means Clustering
-K-Means est un algorithme de clustering non supervisé qui partitionne les données en K groupes homogènes en minimisant la distance entre chaque point et le centroïde de son cluster. Un prétraitement de normalisation (StandardScaler) est appliqué avant l'algorithme.
-
-ClusterLabelProfil comportementalCluster 0NormalPrésence régulière, peu de retards, durée de travail conforme.Cluster 1RetardataireRetards fréquents ou irrégularités d'horaires.Cluster 2AbsentTaux d'absence élevé ou absences groupées suspectes.
-2.2.3  Tesseract OCR
-Tesseract est un moteur OCR open source maintenu par Google depuis 2006. La version 4.x intègre un réseau de neurones LSTM qui améliore significativement la précision, notamment pour les textes en français et en arabe - langues courantes dans les documents RH marocains.
-
-2.2.4  Technologies de développement
-
-TechnologieRôleVersionSpring BootBackend - API REST, sécurité JWT, ORM JPA/Hibernate3.x / Java 21React JSFrontend - Interface utilisateur, tableau de bord18.xFastAPIMicroservice IA - Isolation Forest, K-MeansPython 3.11MySQLBase de données relationnelle8.xTesseractMoteur OCR - extraction de texte5.xscikit-learnBibliothèque ML Python - algorithmes IA1.3+
-
-2.3  Projets Similaires et État de l'Art
-Plusieurs solutions RH existent sur le marché. Notre projet se positionne par rapport à elles :
-
-SolutionPoints fortsLimite vs notre projetSAP SuccessFactorsCouverture complète du cycle RHCoûteux, pas d'IA native, non adapté aux PME marocaines.Odoo HROpen source, modulairePas d'IA intégrée, pas de conformité loi 09-08.WorkdayAnalytique RH avancéeCloud uniquement, prix prohibitif, hors contexte académique.Notre projetIA + OCR intégrés, conformité loi 09-08Contexte PME, bilinguisme FR/AR, architecture moderne 3 tiers.
-Sur le plan académique, les travaux existants sur la détection d'anomalies RH utilisent principalement des approches supervisées (Random Forest, SVM) nécessitant des données étiquetées. Notre contribution est l'application d'une approche non supervisée (Isolation Forest + K-Means) ne nécessitant aucun historique étiqueté, plus réaliste dans un contexte RH réel.
-Chapitre 3
-Vue Conceptuelle
-
-3.1  Architecture du Système
-Le système est conçu selon une architecture trois tiers enrichie d'un microservice IA dédié. Cette séparation garantit l'indépendance technologique, la maintenabilité et la scalabilité de chaque couche.
-
-CoucheTechnologiePortRôlePrésentationReact JS3000Interface utilisateur, tableau de bord, formulaires.BackendSpring Boot / Java 218080API REST, logique métier, sécurité JWT/RBAC, ORM JPA.Microservice IAFastAPI / Python8000Algorithmes Isolation Forest et K-Means.OCRTesseract 5.x-Extraction de texte depuis PDF et images.DonnéesMySQL 83306Base de données relationnelle (schéma Merise).
-
-3.2  Composants du Système
-3.2.1  Backend - Spring Boot
-Le backend suit le pattern MVC enrichi, structuré en quatre couches : les contrôleurs REST (point d'entrée des requêtes), les services (logique métier), les repositories Spring Data JPA (accès aux données), et la couche sécurité Spring Security avec filtre JWT.
-
-ComposantRôleAuthController / AuthServiceAuthentification JWT, génération et validation du token, gestion des rôles RBAC.CongeController / CongeServiceSoumission, validation/refus des congés, gestion du solde.PresenceController / PresenceServiceEnregistrement des présences, calcul des retards.IAController / IAServiceAppel du microservice Python, sauvegarde et exposition des résultats IA.DocumentController / OCRServiceUpload de fichiers, appel Tesseract, stockage du texte extrait.
-3.2.2  Frontend - React JS
-Le frontend est structuré en pages (Login, Dashboards par rôle, Congés, Présences, Paie, Documents, IA), composants réutilisables, et une couche service Axios avec intercepteur JWT pour l'ajout automatique du token à chaque requête. Le routage est protégé par rôle via React Router v6.
-
-3.2.3  Microservice IA - FastAPI Python
-
-EndpointFonctionPOST /detectReçoit le dataset JSON, applique Isolation Forest, retourne les scores et anomalies détectées.POST /clusterNormalise les données, applique K-Means (k=3), retourne les labels de clusters.GET  /rapportGénère les graphiques de visualisation (matplotlib) et retourne le rapport consolidé.
-
-3.3  Diagrammes UML
-3.3.1  Diagramme de Cas d'Utilisation
-Le diagramme identifie trois acteurs humains (Employé, Responsable RH, Administrateur) et deux acteurs système (Module IA, Module OCR). Onze cas d'utilisation essentiels sont répartis en cinq packages : Authentification, Gestion RH, Intelligence Artificielle, Analyse Documentaire et Administration.
-
-Principales relations modélisées : l'upload d'un document inclut obligatoirement l'extraction OCR (<<include>>), et le lancement de l'analyse IA peut étendre vers la segmentation K-Means (<<extend>>).
-
-3.3.2  Diagrammes de Séquence
-Trois scénarios critiques ont été modélisés :
-• Authentification JWT : saisie des identifiants, vérification BCrypt, génération du token, redirection par rôle.
-• Demande de congé : soumission employé, vérification du solde, notification RH, décision et retour à l'employé.
-• Détection d'anomalies IA : extraction des présences, appel FastAPI, Isolation Forest + K-Means, sauvegarde et affichage sur le dashboard.
-
-3.3.3  Diagramme de Classes
-Le diagramme modélise sept classes principales et trois énumérations. La classe abstraite Utilisateur est la base de l'héritage. Chaque employé peut être associé à plusieurs congés, présences, fiches de paie, documents et anomalies (relation 1 vers 0..*).
-
-Classe / EnumAttributs clésUtilisateur (abstract)id, email, motDePasse, role (enum Role), actifEmployematricule, nom, prenom, poste, departement, salaire, soldeCongeCongedateDebut, dateFin, nbJours, type (TypeConge), statut (StatutConge), motifPresencedate, heureArrivee, heureDepart, estEnRetardFichePaiemois, annee, salaireBase, salaireNetDocumentnomFichier, typeDocument, texteExtrait, statutAnomaliescoreIsolation, typeAnomalie, niveauRisque, dateDetection
-
-3.4  Choix des Modèles IA et Justification
-Le choix des algorithmes repose sur quatre contraintes du contexte RH :
-
-ContrainteJustification du choixPas de données étiquetéesLes données RH réelles ne sont pas annotées ? approche non supervisée obligatoire.Volume limité50-500 employés en PME ? pas de Deep Learning, Isolation Forest est O(n) et efficace.InterprétabilitéLe RH doit comprendre pourquoi un employé est signalé ? score d'anomalie lisible.ComplémentaritéIsolation Forest détecte les cas critiques ; K-Means segmente les profils pour des actions RH ciblées.
-3.4.1  Alternatives rejetées
-
-AlgorithmeRaison du rejetDBSCANTrop sensible aux hyperparamètres (epsilon, minPts), difficile à calibrer sans expertise du domaine.AutoencoderNécessite un grand volume de données et des ressources GPU - inadapté au contexte PME.One-Class SVMComplexité de calibration élevée, temps d'inférence plus lent qu'Isolation Forest.Random ForestSupervisé - nécessite des données étiquetées inexistantes dans notre contexte.
-
-3.5  Choix des Datasets d'Entraînement
-En l'absence de données RH réelles disponibles en phase de développement, nous utilisons un dataset synthétique généré en Python, simulant le comportement de 100 employés sur 6 mois :
-• Volume : 18 000 enregistrements de présence (100 employés × 180 jours ouvrables).
-• Features : heure_arrivee, heure_depart, duree_travail, est_retard, nb_absences_semaine.
-• 5% d'anomalies injectées intentionnellement pour valider le taux de détection.
-• Prétraitement : nettoyage des valeurs manquantes, normalisation StandardScaler avant K-Means.
-
-Pour la validation finale, des données réelles anonymisées (conformes à la loi 09-08) seront utilisées : les identifiants personnels sont remplacés par des ID anonymes avant tout traitement IA.
-
-
-3.6  Architecture Réseau
-En développement, les trois services tournent en local sur la même machine. En production, le déploiement respecte les règles suivantes :
-• Le frontend React est servi par Nginx (port 80/443).
-• Le backend Spring Boot expose ses APIs via HTTPS uniquement.
-• Le microservice FastAPI est interne au réseau serveur (non exposé à l'extérieur).
-• La base de données MySQL est accessible uniquement depuis le backend (règle firewall).
-• Tous les échanges React ? Backend sont protégés par token JWT dans le header Authorization.
-
-Système RH Intelligent   -   Rapport PFE · L3 Développement Informatique 2025-2026
-
-Faculté des Sciences Ben M'Sick - Université Hassan II, Casablanca   |   1
-
